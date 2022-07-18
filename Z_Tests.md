@@ -4,7 +4,7 @@ Morgan Shumaker
 
 ``` r
 library(pacman) 
-p_load(tidyverse, dplyr, devtools, ggplot2, gplots, skimr, markdown, rmarkdown, broom, ggridges, readxl, BSDA)
+p_load(tidyverse, dplyr, devtools, ggplot2, gplots, skimr, markdown, rmarkdown, broom, ggridges, readxl, BSDA, scales)
 ```
 
 ## Importing Data
@@ -83,3 +83,25 @@ SEED_Exp1_wide <- data.frame(SEED_Exp1_wide)
     ## sample estimates:
     ##     mean of x     mean of y 
     ## -4.625933e-07  4.252953e-07
+
+## Graphics
+
+``` r
+SEED_Plots <- read_xlsx("SEED_Exp1_RPlots.xlsx")
+```
+
+``` r
+SEED_Plots <- SEED_Plots %>%
+  mutate(Metacog = case_when(Metacognition == "0" ~ "Errorless",
+                             Metacognition == "1" ~ "Errorful",
+                             TRUE ~ as.character(Metacognition)))
+```
+
+``` r
+ggplot(SEED_Plots, aes(x = Age_Group, fill = Condition)) + geom_bar(position = "stack") +  facet_wrap(~Metacog) +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
+  labs(x = "Age Group", y = "Percent") + 
+  theme_minimal()
+```
+
+![](Z_Tests_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
