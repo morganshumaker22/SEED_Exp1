@@ -1,0 +1,57 @@
+---
+title: "SEED Experiment 1"
+author: "Morgan Shumaker"
+output: github_document
+editor_options: 
+  chunk_output_type: console
+---
+```{r}
+library(pacman) 
+p_load(tidyverse, dplyr, devtools, ggplot2, gplots, skimr, markdown, rmarkdown, broom, ggridges, readxl, BSDA)
+```
+
+## Importing Data 
+```{r - long}
+SEED_Exp1 <- read_xlsx("R_Exp1_SEED.xlsx")
+```
+
+```{r - wide}
+SEED_Exp1_wide <- read_xlsx("R_Exp1SEED_wide.xlsx")
+```
+
+## Errorless
+To run a z-test with this package (BSDA), the data needs to be in a data frame
+so that R recognizes it as an object:
+```{r}
+SEED_Exp1_wide <- data.frame(SEED_Exp1_wide)
+```
+
+*Create data frames*
+```{r}
+  Older_Errorless <- data.frame(SEED_Exp1_wide$Older_Errorless)
+```
+
+```{r}
+  Younger_Errorless <- data.frame(SEED_Exp1_wide$Younger_Errorless)
+```
+
+*Z test*
+```{r}
+  z.test(x = Older_Errorless, y = Younger_Errorless, alternative = "two.sided", mu = 0, sigma.x = 15, sigma.y = 15)
+```
+
+## Errorful
+*Create data frames*
+```{r}
+  Older_Errorful <- data.frame(SEED_Exp1_wide$Older_Errorful)
+```
+
+```{r}
+  Younger_Errorful <- data.frame(SEED_Exp1_wide$Younger_Erroful)
+```
+
+*Z test*
+```{r}
+  z.test(x = Older_Errorful, y = Younger_Errorful, alternative = "two.sided", mu = 0, sigma.x = 15, sigma.y = 15)
+```
+
