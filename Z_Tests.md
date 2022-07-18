@@ -4,7 +4,7 @@ Morgan Shumaker
 
 ``` r
 library(pacman) 
-p_load(tidyverse, dplyr, devtools, ggplot2, gplots, skimr, markdown, rmarkdown, broom, ggridges, readxl, BSDA, scales)
+p_load(tidyverse, dplyr, devtools, ggplot2, gplots, skimr, markdown, rmarkdown, broom, ggridges, readxl, BSDA, scales, ggthemes)
 ```
 
 ## Importing Data
@@ -101,7 +101,9 @@ SEED_Plots <- SEED_Plots %>%
 ggplot(SEED_Plots, aes(x = Age_Group, fill = Condition)) + geom_bar(position = "stack") +  facet_wrap(~Metacog) +
   scale_y_continuous(labels = scales::percent_format(scale = 1)) +
   labs(x = "Age Group", y = "Percent") + 
-  theme_minimal()
+  theme_minimal() + theme(panel.border = element_blank(),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank()) 
 ```
 
 ![](Z_Tests_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
