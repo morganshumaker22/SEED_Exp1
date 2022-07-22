@@ -60,7 +60,162 @@ SEED_Exp1_wide <- data.frame(SEED_Exp1_wide)
 SEED_Plots <- read_xlsx("SEED_Exp1_RPlots.xlsx")
 ```
 
+*Creating proportion of people who did better in errorful*
+```{r}
+SEED_errorful <- SEED_Plots %>%
+  group_by(AgeGroup) %>%
+  count(BetterErrorful)
+```
 
+```{r}
+rename(SEED_errorful, totaln = n)
+```
+
+```{r}
+Errorful_Young <- SEED_errorful %>%
+  filter(AgeGroup == 1) %>%
+  mutate(totaln = (sum(n))) 
+```
+
+```{r}
+Errorful_Old <- SEED_errorful %>%  
+  filter(AgeGroup == 2) %>%
+  mutate(totaln = sum(n))
+```
+
+```{r}
+ErrorfulTotal <- full_join(Errorful_Young, Errorful_Old)
+```
+
+```{r}
+ErrorfulTotal <- ErrorfulTotal %>% 
+  mutate(errorfulprop = n/totaln)
+```
+
+*Creating proportion of people who did better in errorless*
+
+```{r}
+SEED_errorless <- SEED_Plots %>%
+  group_by(AgeGroup) %>%
+  count(BetterErrorless)
+```
+
+```{r}
+rename(SEED_errorless, totaln = n)
+```
+
+```{r}
+Errorless_Young <- SEED_errorless %>%
+  filter(AgeGroup == 1) %>%
+  mutate(totaln = (sum(n))) 
+```
+
+```{r}
+Errorless_Old <- SEED_errorless %>%  
+  filter(AgeGroup == 2) %>%
+  mutate(totaln = sum(n))
+```
+
+```{r}
+ErrorlessTotal <- full_join(Errorless_Young, Errorless_Old)
+```
+
+```{r}
+ErrorlessTotal <- ErrorlessTotal %>% 
+  mutate(errorlessprop = n/totaln)
+```
+
+*Combining data frames*
+
+```{r}
+BetterIn_Total <- full_join(ErrorfulTotal, ErrorlessTotal)
+```
+
+## Creating Metacognition Errorless
+
+```{r}
+Meta_errorless <- SEED_Plots %>%
+  group_by(AgeGroup) %>%
+  count(Metacognition)
+```
+
+```{r}
+rename(Meta_errorless, totaln = n)
+```
+
+```{r}
+MetaErrorless_Y <- Meta_errorless %>%
+  filter(AgeGroup == 1) %>%
+  mutate(totaln = (sum(n))) 
+```
+
+```{r}
+MetaErrorless_O <- Meta_errorless %>%  
+  filter(AgeGroup == 2) %>%
+  mutate(totaln = sum(n))
+```
+
+```{r}
+MetaErrorlessTotal <- full_join(MetaErrorless_Y, MetaErrorless_O)
+```
+
+```{r}
+MetaErrorlessTotal <- MetaErrorlessTotal %>% 
+  mutate(metaerrorless_prop = n/totaln)
+```
+
+## Creating Metacognition Errorful 
+
+```{r}
+Meta_errorful <- SEED_Plots %>%
+  group_by(AgeGroup) %>%
+  count(Metacognition)
+```
+
+```{r}
+rename(Meta_errorful, totaln = n)
+```
+
+```{r}
+MetaErrorful_Y <- Meta_errorful %>%
+  filter(AgeGroup == 1) %>%
+  mutate(totaln = (sum(n))) 
+```
+
+```{r}
+MetaErrorful_O <- Meta_errorful %>%  
+  filter(AgeGroup == 2) %>%
+  mutate(totaln = sum(n))
+```
+
+```{r}
+MetaErrorfulTotal <- full_join(MetaErrorful_Y, MetaErrorful_O)
+```
+
+```{r}
+MetaErrorfulTotal <- MetaErrorfulTotal %>% 
+  mutate(metaerrorfulprop = n/totaln)
+```
+
+```{r}
+MetacognitionTotal <- full_join(MetaErrorfulTotal, MetaErrorlessTotal)
+```
+
+## Creating Full Data Set 
+
+```{r}
+SEEDTotal <- full_join(MetacognitionTotal, BetterIn_Total)
+```
+
+
+
+
+
+
+
+
+
+## To change labels on graph
 ```{r}
 SEED_Plots <- SEED_Plots %>%
   mutate(Metacog = case_when(Metacognition == "0" ~ "Errorless",
@@ -68,12 +223,4 @@ SEED_Plots <- SEED_Plots %>%
                              TRUE ~ as.character(Metacognition)))
 ```
 
-```{r}
-ggplot(SEED_Plots, aes(x = Age_Group, fill = Condition)) + geom_bar(position = "stack") +  facet_wrap(~Metacog) +
-  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
-  labs(x = "Age Group", y = "Percent") + 
-  theme_minimal() + theme(panel.border = element_blank(),
-          panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank()) 
-  
-```
+
