@@ -32,5 +32,5 @@ t.test(Exp1_Graphics$Repetition ~ Exp1_Graphics$AgeGroup, var.equal=TRUE)
 t.test(Exp1_Graphics$Other ~ Exp1_Graphics$AgeGroup, var.equal=TRUE)
 t.test(Exp1_Graphics$Metacog ~ Exp1_Graphics$AgeGroup, var.equal=TRUE)
 
-
-
+#Age Group on Vocab Test Accuracy
+t.test(Exp1_Graphics$VocabTestAcc ~ Exp1_Graphics$AgeGroup, var.equal=TRUE)
