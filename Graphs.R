@@ -1,10 +1,10 @@
 
 library(pacman) 
-p_load(tidyverse, dplyr, devtools, ggplot2, gplots, skimr, markdown, rmarkdown, broom, ggridges, readxl, BSDA, scales, ggthemes, readr, plotrix)
+p_load(tidyverse, dplyr, devtools, ggplot2, gplots, skimr, markdown, rmarkdown, broom, ggridges, readxl, BSDA, scales, ggthemes, readr, plotrix, papaja)
 
 
 ## Importing Data 
-Exp1_Graphics <- read_csv("Exp1.csv")
+Exp1_Graphics <- read_csv("Exp1_Graphics.csv")
 
 
 ## Figure 1
@@ -18,9 +18,17 @@ ggplot(Exp1_Graphics, aes(y=accuracy, x=condition, fill = condition)) +
   geom_bar(stat= "identity", width = 1)+ facet_wrap(~AgeGroup2)+ylim(0,1)+
   theme_apa(base_size = 12, base_family = "")+
   scale_fill_manual(values=c("black", "grey"))+
-  labs(x = "Study Condition", y = "Proportion of Correctly Recalled Words", 
-       title = "Final Test Performance for Younger and Older Adults")+
+  labs(x = "Study Condition", y = "Proportion of Correctly Recalled Words")+
   theme(legend.position="none")
 
 
+MetaGraph <- read_csv("MetaGraph.csv")
+
+ggplot(MetaGraph, aes(x = Condition, y = Proportion, fill = Better_Performance ))+
+  geom_col()+facet_wrap(~Age_Group)+ylim(0,1)+
+  theme_apa(base_size = 12, base_family = "")+
+  scale_fill_manual(values=c("black", "grey"))+
+  labs(x = "Study Condition", y = "Proportion", 
+       fill = "Performance")
+  
 

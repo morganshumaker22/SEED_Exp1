@@ -4,7 +4,7 @@ Morgan Shumaker
 
 ``` r
 library(pacman) 
-p_load(tidyverse, dplyr, devtools, ggplot2, gplots, skimr, markdown, rmarkdown, broom, ggridges, readxl, BSDA, scales, ggthemes)
+p_load(tidyverse, dplyr, devtools, ggplot2, gplots, skimr, markdown, rmarkdown, broom, ggridges, readxl, BSDA, scales, ggthemes, readr)
 ```
 
 ## Importing Data
@@ -288,11 +288,65 @@ SEEDTotal <- full_join(MetacognitionTotal, BetterIn_Total)
 
     ## Joining, by = c("AgeGroup", "n", "totaln")
 
-## To change labels on graph
+``` r
+write_csv(SEEDTotal, path = "/Users/morgan/Desktop/TCU/Hargis Lab/Projects/SEED/Exp 1 Data/SEEDTotal.csv")
+```
+
+    ## Warning: The `path` argument of `write_csv()` is deprecated as of readr 1.4.0.
+    ## Please use the `file` argument instead.
+    ## This warning is displayed once every 8 hours.
+    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
 
 ``` r
-SEED_Plots <- SEED_Plots %>%
-  mutate(Metacog = case_when(Metacognition == "0" ~ "Errorless",
-                             Metacognition == "1" ~ "Errorful",
-                             TRUE ~ as.character(Metacognition)))
+SEED_Graphs <- read_csv("/Users/morgan/Desktop/TCU/Hargis Lab/Projects/SEED/Exp 1 Data/SEEDTotal_Graph.csv")
 ```
+
+    ## Rows: 4 Columns: 4
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (2): AgeGroup, Metacognition
+    ## dbl (2): MetacogProp, PropAcc
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+SEED_Graphs %>% 
+  ggplot(aes(y = PropAcc, x = AgeGroup, fill = Metacognition, position = MetacogProp, warnings = FALSE)) + geom_col() 
+```
+
+![](Z_Tests_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
+
+``` r
+SEED_Graph <- SEED_Graphs %>% 
+  mutate(Condition = Metacognition) 
+```
+
+``` r
+SEED_Graph %>%   
+ggplot(aes(y = PropAcc, x = AgeGroup, fill = Metacognition, position = "stack", warnings = FALSE)) + geom_col() +facet_wrap(~Condition)
+```
+
+![](Z_Tests_files/figure-gfm/unnamed-chunk-41-1.png)<!-- -->
+
+ggplot(SEED_Plots, aes(x = Age_Group, fill = Condition)) +
+geom_bar(position = “stack”) + facet_wrap(\~Metacog) +
+scale_y\_continuous(labels = scales::percent_format(scale = 1)) + labs(x
+= “Age Group”, y = “Percent”) + theme_minimal() + theme(panel.border =
+element_blank(), panel.grid.major = element_blank(), panel.grid.minor =
+element_blank())
+
+## To change labels on graph
+
+brexit %>% count(region, opinion) %>% group_by(region) %>%
+mutate(opinion_prop = n / sum(n)) %>% ggplot(aes(y = opinion, x =
+opinion_prop, fill = opinion, warnings = FALSE)) + geom_col()
++facet_wrap(\~region, nrow = 1, labeller = label_wrap_gen(width = 12)) +
+labs( title = “Was Britain right/wrong to vote to leave EU?”, subtitle =
+“YouGov Survey Results, 2-3 September 2019”, caption = “Source:
+bit.ly/2lCJZVg”, x = “Proportion”, y = NULL ) + scale_fill_manual(values
+= c( “Wrong” = “#ef8a62”, “Right” = “#67a9cf”, “Don’t know” = “gray” ))
++ theme_minimal() + scale_x\_continuous(labels =
+percent)`{r} SEED_Plots <- SEED_Plots %>%   mutate(Metacog = case_when(Metacognition == "0" ~ "Errorless",                              Metacognition == "1" ~ "Errorful",                              TRUE ~ as.character(Metacognition)))`
+
+## Bar Graph

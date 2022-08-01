@@ -1,0 +1,9 @@
+﻿Age_Group,Better_Performance,Condition,Proportion
+Younger,Predicted,Errorful,0.53
+Younger,Actual,Errorful,0.73
+Younger,Predicted,Errorless,0.47
+Younger,Actual,Errorless,0.13
+Older,Predicted,Errorful,0.38
+Older,Actual,Errorful,0.72
+Older,Predicted,Errorless,0.62
+Older,Actual,Errorless,0.24
