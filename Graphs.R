@@ -24,8 +24,11 @@ ggplot(Exp1_Graphics, aes(y=accuracy, x=condition, fill = condition)) +
 
 MetaGraph <- read_csv("MetaGraph.csv")
 
-ggplot(MetaGraph, aes(x = Condition, y = Proportion, fill = Better_Performance ))+
-  geom_col()+facet_wrap(~Age_Group)+ylim(0,1)+
+MetaGraph <- MetaGraph %>% 
+  mutate(Estimate = fct_recode(Better_Performance, Estimated = "Predicted"))
+
+ggplot(MetaGraph, aes(x = Condition, y = Proportion, fill = Estimate))+
+  geom_col(position = "fill")+facet_wrap(~Age_Group)+ylim(0,1)+
   theme_apa(base_size = 12, base_family = "")+
   scale_fill_manual(values=c("black", "grey"))+
   labs(x = "Study Condition", y = "Proportion", 
