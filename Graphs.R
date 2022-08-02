@@ -46,9 +46,14 @@ ggplot(MetaGraph, aes(x = Condition, y = Proportion, fill = Estimate))+
   theme(text = element_text(size = 12, family = "Arial", color = "black"))+
   theme(axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0)))+
   theme(panel.spacing.x = unit(0, "null"))+
-  theme(plot.title = element_text(size=12))
+  theme(plot.title = element_text(size=12))+
+  geom_errorbar(data = df, mapping = aes(ymin = .028, ymax = .05),
+    na.rm = FALSE, stat = "identity", position = "identity")
   
 
-
-
+#Getting standard error
+df <- Exp1_Graphics %>% 
+  group_by(AgeGroup2, condition) %>% 
+  summarise(mean = mean(accuracy),
+            se = std.error(accuracy))
 
