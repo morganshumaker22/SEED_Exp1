@@ -14,10 +14,10 @@ Exp1_Graphics <- Exp1_Graphics %>%
                                TRUE ~ as.character(Condition))) %>% 
   mutate(accuracy = as.numeric(Accuracy))
 
-ggplot(Exp1_Graphics, aes(y=accuracy, x=condition, fill = condition)) + 
+ggplot(attempt, aes(y=accuracy, x=condition, fill = condition)) + 
   geom_bar(stat= "identity", width = 1, color = "black")+ facet_wrap(~AgeGroup2)+ylim(0,1)+
   theme_apa(base_size = 12, base_family = "")+
-  scale_fill_manual(values=c("black", "white"))+
+  scale_fill_manual(values=c("grey", "white"))+
   labs(x = "Study Condition", y = "Proportion of Correctly Recalled Words")+
   theme(legend.position="none")+
   theme(axis.line = element_line(colour = "black", size = .3))+
@@ -26,7 +26,15 @@ ggplot(Exp1_Graphics, aes(y=accuracy, x=condition, fill = condition)) +
   theme(text = element_text(size = 12, family = "Arial", color = "black"))+
   theme(axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0)))+
   theme(panel.spacing.x = unit(0, "null"))+
-  theme(plot.title = element_text(size=12))+geom_errorbar(aes(ymin = "lower", ymax = "upper"), width = 0.2)
+  theme(plot.title = element_text(size=12))+
+   geom_errorbar(aes(ymin=mean-se, ymax=mean+se),
+    position="identity",
+    stat = "identity",
+    na.rm = FALSE,
+    show.legend = NA,
+    inherit.aes = TRUE
+  )
+
 
 
 MetaGraph <- read_csv("MetaGraph.csv")
@@ -46,9 +54,8 @@ ggplot(MetaGraph, aes(x = Condition, y = Proportion, fill = Estimate))+
   theme(text = element_text(size = 12, family = "Arial", color = "black"))+
   theme(axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0)))+
   theme(panel.spacing.x = unit(0, "null"))+
-  theme(plot.title = element_text(size=12))+
-  geom_errorbar(data = df, mapping = aes(ymin = .028, ymax = .05),
-    na.rm = FALSE, stat = "identity", position = "identity")
+  theme(plot.title = element_text(size=12))
+
   
 
 #Getting standard error
@@ -56,4 +63,6 @@ df <- Exp1_Graphics %>%
   group_by(AgeGroup2, condition) %>% 
   summarise(mean = mean(accuracy),
             se = std.error(accuracy))
+attempt <- full_join(df, Exp1_Graphics)
+
 
