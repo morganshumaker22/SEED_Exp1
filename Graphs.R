@@ -26,7 +26,7 @@ ggplot(Exp1_Graphics, aes(y=accuracy, x=condition, fill = condition)) +
   theme(text = element_text(size = 12, family = "Arial", color = "black"))+
   theme(axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0)))+
   theme(panel.spacing.x = unit(0, "null"))+
-  theme(plot.title = element_text(size=12))
+  theme(plot.title = element_text(size=12))+geom_errorbar(aes(ymin = "lower", ymax = "upper"), width = 0.2)
 
 
 MetaGraph <- read_csv("MetaGraph.csv")
